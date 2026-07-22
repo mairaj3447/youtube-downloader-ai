@@ -8,6 +8,10 @@ import glob
 import json
 import re
 
+FFMPEG_LOCATION = os.environ.get(
+    "FFMPEG_LOCATION",
+    r"C:\pythonproj\ffmpeg\bin"
+)
 app = Flask(__name__)
 DOWNLOAD_FOLDER = 'downloads'
 os.makedirs(DOWNLOAD_FOLDER, exist_ok=True)
@@ -54,7 +58,7 @@ def download_video(url, quality=None):
     "--merge-output-format",
     "mp4",
     "--ffmpeg-location",
-    r"C:\pythonproj\ffmpeg\bin",
+    FFMPEG_LOCATION,
     "--extractor-args",
     "youtube:player_client=android",
     "-o",
@@ -81,7 +85,7 @@ def download_audio(url):
     "--audio-format",
     "mp3",
     "--ffmpeg-location",
-    r"C:\pythonproj\ffmpeg\bin",
+    FFMPEG_LOCATION,
     "-o",
     output_filename,
     url
@@ -257,7 +261,7 @@ def transcribe_video(url):
         "--audio-format",
         "mp3",
         "--ffmpeg-location",
-        r"C:\pythonproj\ffmpeg\bin",
+        FFMPEG_LOCATION,
         "-o",
         temp_audio,
         url
@@ -375,4 +379,5 @@ def preview():
         return jsonify({"error": "Could not fetch video info"}), 500
 
 if __name__ == '__main__':
-    app.run(host="0.0.0.0", port=5000)
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)
