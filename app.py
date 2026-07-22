@@ -7,8 +7,20 @@ import os
 import glob
 import json
 import re
+import shutil
 
-COOKIES_FILE = os.environ.get("COOKIES_FILE", "/etc/secrets/cookies.txt")
+COOKIES_FILE = os.environ.get(
+    "COOKIES_FILE",
+    "/etc/secrets/cookies.txt"
+)
+
+RUNTIME_COOKIES_FILE = "/tmp/cookies.txt"
+
+if os.path.exists(COOKIES_FILE):
+    import shutil
+    shutil.copy2(COOKIES_FILE, RUNTIME_COOKIES_FILE)
+    COOKIES_FILE = RUNTIME_COOKIES_FILE
+    
 FFMPEG_LOCATION = os.environ.get(
     "FFMPEG_LOCATION",
     r"C:\pythonproj\ffmpeg\bin"
