@@ -1,0 +1,17 @@
+venv/
+downloads/
+ffmpeg/
+
+cookies.txt
+text.env
+.env
+
+*.mp3
+*.mp4
+*.webm
+*.vtt
+*.m4a
+*.wav
+
+__pycache__/
+*.pyc

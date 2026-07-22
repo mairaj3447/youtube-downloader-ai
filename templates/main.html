@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Video/Audio Downloader</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"> 
+  <style>
+   body {
+  margin: 0;
+  font-family: 'Roboto', sans-serif;
+  background: #f0f4f8;
+  min-height: 100vh;
+}
+
+.main-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+
+.container {
+  background: white;
+  padding: 30px 40px;
+  border-radius: 10px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 600px;
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #4a90e2;
+}
+
+.highlight {
+  color: #4a90e2;
+}
+
+.steps {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 30px;
+}
+
+.step {
+  text-align: center;
+  width: 30%;
+}
+
+.step-number {
+  background-color: #333;
+  color: white;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.step-description {
+  margin-top: 10px;
+  font-weight: 500;
+  font-size: 0.95rem;
+  color: #555;
+}
+
+form {
+  margin-top: 40px;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+  display: flex;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.form-control {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+}
+
+.buttons {
+  display: flex;
+  justify-content: space-between;
+}
+
+.btn {
+  background-color: #4a90e2;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  width: 48%;
+}
+
+.btn:hover {
+  background-color: #357ab7;
+}
+
+.video-preview {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.video-preview img {
+  max-width: 100%;
+  border-radius: 10px;
+}
+
+.video-preview h3 {
+  margin-top: 10px;
+  color: #4a90e2;
+}
+
+textarea {
+  width: 100%;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  padding: 10px;
+  font-size: 1rem;
+  margin-top: 20px;
+}
+
+.top-bar {
+  background: linear-gradient(90deg, #1e3a8a, #2563eb);
+  color: white;
+  display: flex;
+  justify-content: center;
+  padding: 5px 20px;
+  font-size: 0.9rem;
+}
+
+.top-bar .feature {
+  display: flex;
+  align-items: center;
+  margin: 0 15px;
+}
+
+.top-bar .feature img {
+  width: 16px;
+  margin-right: 6px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #2563eb;
+  padding: 15px 20px;
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: white;
+}
+
+.logo .blue {
+  color: #60a5fa;
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
+}
+
+.search-bar input {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 20px;
+  outline: none;
+  font-size: 0.9rem;
+}
+
+.language-select {
+  margin-left: 15px;
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.menu-icon {
+  margin-left: 15px;
+  font-size: 1.5rem;
+  color: white;
+  cursor: pointer;
+}
+
+/* New section: Instructions below the form */
+.instructions {
+  text-align: center;
+  max-width: 800px;
+}
+
+.instructions h1 {
+  color: #4a90e2;
+  margin-bottom: 20px;
+}
+
+.steps {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+  </style>
+</head>
+<body>
+  <!-- Top Bar with Features -->
+  <div class="top-bar">
+    <div class="feature">
+    <i class="fa fa-comment"></i>24/7 Support
+    </div>
+    <div class="feature">
+              <i class="fa fa-bolt"></i>Instant Delivery
+    </div>
+    <div class="feature">
+      <img src="https://img.icons8.com/ios-filled/50/ffffff/star--v1.png" alt="clients icon"/>
+      100k+ Clients
+    </div>
+  </div>
+
+  <!-- Main Content Wrapper -->
+  <div class="main-content">
+    <div class="container">
+      <h1>Video/Audio Downloader</h1>
+      <form method="POST" action="/process">
+        <div class="form-group">
+          <label for="url">Paste URL</label>
+          <input type="text" id="url" name="url" class="form-control" placeholder="https://www.youtube.com/watch?v=..." required>
+        </div>
+
+        <div class="form-group">
+          <input type="checkbox" id="formatSwitch" name="type" value="audio">
+          <label for="formatSwitch">Download as Audio?</label>
+          </div>
+
+        <div class="form-group">
+          <label for="quality">Select Quality</label>
+          <select id="quality" name="quality" class="form-control">
+            <option value="1080">1080p</option>
+            <option value="720">720p</option>
+            <option value="480">480p</option>
+            <option value="360">360p</option>
+            <option value="240">240p</option>
+            <option value="144">144p</option>
+          </select>
+        </div>
+
+        {% if video_info %}
+        <div class="video-preview">
+          <img src="{{ video_info.thumbnail }}" alt="Video Thumbnail">
+          <h3>{{ video_info.title }}</h3>
+        </div>
+        {% endif %}
+
+        <div class="buttons">
+          <button type="submit" name="action" value="download" class="btn">Download</button>
+          <button type="submit" name="action" value="summarize" class="btn">Transcribe</button>
+        </div>
+      </form>
+      
+
+      {% if summary %}
+      <h3>Transcript:</h3>
+      <textarea rows="10">{{ summary }}</textarea>
+      {% endif %}
+    </div>
+
+    <!-- Instruction Section -->
+    <div class="instructions">
+      <h1>How to Download <span class="highlight">Youtube Videos</span> for Free?</h1>
+      <div class="steps">
+        <div class="step">
+          <div class="step-number">1</div>
+          <div class="step-description">Enter the video link</div>
+        </div>
+        <div class="step">
+          <div class="step-number">2</div>
+          <div class="step-description">Choose your preferred format and quality</div>
+        </div>
+        <div class="step">
+          <div class="step-number">3</div>
+          <div class="step-description">Download the video</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
