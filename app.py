@@ -8,6 +8,7 @@ import glob
 import json
 import re
 
+COOKIES_FILE = os.environ.get("COOKIES_FILE")
 FFMPEG_LOCATION = os.environ.get(
     "FFMPEG_LOCATION",
     r"C:\pythonproj\ffmpeg\bin"
@@ -45,56 +46,78 @@ def run_yt_dlp(cmd):
         raise RuntimeError(result.stderr)
     return result.stdout
 
-def download_video(url, quality=None):
-    output_filename = os.path.join(DOWNLOAD_FOLDER, "%(title)s.%(ext)s")
-    
-    # Download pre-merged files only (no audio conversion)
-    cmd = [
-    sys.executable,
-    "-m",
-    "yt_dlp",
-    "-f",
-    "bv*+ba/b",
-    "--merge-output-format",
-    "mp4",
-    "--ffmpeg-location",
-    FFMPEG_LOCATION,
-    "--extractor-args",
-    "youtube:player_client=android",
-    "-o",
-    output_filename,
-    url
-]
-    
-    run_yt_dlp(cmd)
-    list_of_files = glob.glob(os.path.join(DOWNLOAD_FOLDER, "*.mp4"))
-    if list_of_files:
-        latest_file = max(list_of_files, key=os.path.getmtime)
-        return latest_file
-    return None
-
 def download_audio(url):
     output_filename = os.path.join(DOWNLOAD_FOLDER, "%(title)s.%(ext)s")
+
     cmd = [
-    sys.executable,
-    "-m",
-    "yt_dlp",
-    "-f",
-    "bestaudio/best",
-    "--extract-audio",
-    "--audio-format",
-    "mp3",
-    "--ffmpeg-location",
-    FFMPEG_LOCATION,
-    "-o",
-    output_filename,
-    url
-]
+        sys.executable,
+        "-m",
+        "yt_dlp",
+        "-f",
+        "bestaudio/best",
+        "--extract-audio",
+        "--audio-format",
+        "mp3",
+        "--ffmpeg-location",
+        FFMPEG_LOCATION,
+        "-o",
+        output_filename
+    ]
+
+    if COOKIES_FILE and os.path.exists(COOKIES_FILE):
+        cmd.extend([
+            "--cookies",
+            COOKIES_FILE
+        ])
+
+    cmd.append(url)
+
     run_yt_dlp(cmd)
+
     list_of_files = glob.glob(os.path.join(DOWNLOAD_FOLDER, "*.mp3"))
+
     if list_of_files:
         latest_file = max(list_of_files, key=os.path.getmtime)
         return latest_file
+
+    return None
+
+
+def download_video(url, quality=None):
+    output_filename = os.path.join(DOWNLOAD_FOLDER, "%(title)s.%(ext)s")
+
+    cmd = [
+        sys.executable,
+        "-m",
+        "yt_dlp",
+        "-f",
+        "bv*+ba/b",
+        "--merge-output-format",
+        "mp4",
+        "--ffmpeg-location",
+        FFMPEG_LOCATION,
+        "--extractor-args",
+        "youtube:player_client=android",
+        "-o",
+        output_filename
+    ]
+
+    if COOKIES_FILE and os.path.exists(COOKIES_FILE):
+        cmd.extend([
+            "--cookies",
+            COOKIES_FILE
+        ])
+
+    cmd.append(url)
+
+    run_yt_dlp(cmd)
+
+    list_of_files = glob.glob(os.path.join(DOWNLOAD_FOLDER, "*.mp4"))
+
+    if list_of_files:
+        latest_file = max(list_of_files, key=os.path.getmtime)
+        return latest_file
+
     return None
 
 def get_youtube_transcript_improved(video_id):
@@ -264,9 +287,14 @@ def transcribe_video(url):
         FFMPEG_LOCATION,
         "-o",
         temp_audio,
-        url
     ]
+    if COOKIES_FILE and os.path.exists(COOKIES_FILE):
+            cmd.extend([
+                "--cookies",
+                COOKIES_FILE
+            ])
 
+    cmd.append(url)
     run_yt_dlp(cmd)
 
     files = glob.glob(os.path.join(DOWNLOAD_FOLDER, "*.mp3"))
