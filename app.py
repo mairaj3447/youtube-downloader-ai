@@ -8,7 +8,7 @@ import glob
 import json
 import re
 
-COOKIES_FILE = os.environ.get("COOKIES_FILE")
+COOKIES_FILE = os.environ.get("COOKIES_FILE", "/etc/secrets/cookies.txt")
 FFMPEG_LOCATION = os.environ.get(
     "FFMPEG_LOCATION",
     r"C:\pythonproj\ffmpeg\bin"
